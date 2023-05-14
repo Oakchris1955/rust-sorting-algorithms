@@ -18,6 +18,21 @@ pub fn insertion_sort(list: &mut Vec<usize>) {
 	}
 }
 
+pub fn selection_sort(list: &mut Vec<usize>) {
+	for begin_index in 0..list.len() {
+		let mut min_index = begin_index;
+		for check_index in begin_index..list.len() {
+			if list[check_index] < list[min_index] {
+				min_index = check_index;
+			}
+		}
+
+		let min_item = list[min_index];
+		list.remove(min_index);
+		list.insert(begin_index, min_item);
+	}
+}
+
 #[cfg(test)]
 mod tests {
 	const UNSORTED_LIST: &[usize] = &[6, 3, 4, 2, 5, 1];
@@ -34,5 +49,10 @@ mod tests {
     #[test]
     fn insertion_test() {
         general_test(&mut UNSORTED_LIST.to_vec(), insertion_sort);
+    }
+
+	#[test]
+    fn selection_test() {
+        general_test(&mut UNSORTED_LIST.to_vec(), selection_sort);
     }
 }
