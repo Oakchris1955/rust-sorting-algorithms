@@ -33,6 +33,23 @@ pub fn selection_sort(list: &mut Vec<usize>) {
 	}
 }
 
+pub fn bubble_sort(list: &mut Vec<usize>) {
+	loop {
+		let mut is_sorted = true;
+		let mut last_index = 1;
+		while last_index < list.len() {
+			if list[last_index-1] > list[last_index] {
+				list.swap(last_index-1, last_index);
+				is_sorted = false;
+			}
+			last_index += 1;
+		}
+		if is_sorted {
+			break;
+		}
+	}
+}
+
 #[cfg(test)]
 mod tests {
 	const UNSORTED_LIST: &[usize] = &[6, 3, 4, 2, 5, 1];
@@ -54,5 +71,10 @@ mod tests {
 	#[test]
     fn selection_test() {
         general_test(&mut UNSORTED_LIST.to_vec(), selection_sort);
+    }
+
+	#[test]
+    fn bubble_test() {
+        general_test(&mut UNSORTED_LIST.to_vec(), bubble_sort);
     }
 }
