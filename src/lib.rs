@@ -50,6 +50,28 @@ pub fn bubble_sort(list: &mut Vec<usize>) {
 	}
 }
 
+pub fn merge_sort(list: &mut Vec<usize>) {
+	let length = list.len();
+
+	if length != 1 {
+		// Line below obtained from https://stackoverflow.com/a/72442854
+		let split_index = (length + 2 - 1) / 2;
+
+		let lists = list.split_at(split_index);
+		let mut list_lower = lists.0.to_vec();
+		let mut list_upper = lists.1.to_vec();
+
+		merge_sort(&mut list_lower);
+		merge_sort(&mut list_upper);
+
+		for item in list_upper {
+			list_lower.insert(binary_search(&list_lower, &item), item);
+		}
+
+		*list = list_lower;
+	}
+}
+
 
 #[allow(dead_code)]
 /// The algorithm below is used in order to determine at which index to insert an item into a vector, assuming that the given vector is sorted. It is supposed to be used by module functions and not by outside sources (that is why it isn't a public function)
@@ -109,5 +131,10 @@ mod tests {
 	#[test]
     fn bubble_test() {
         general_test(&mut UNSORTED_LIST.to_vec(), bubble_sort);
+    }
+
+	#[test]
+    fn merge_test() {
+        general_test(&mut UNSORTED_LIST.to_vec(), merge_sort);
     }
 }
