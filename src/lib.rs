@@ -50,6 +50,34 @@ pub fn bubble_sort(list: &mut Vec<usize>) {
 	}
 }
 
+
+#[allow(dead_code)]
+/// The algorithm below is used in order to determine at which index to insert an item into a vector, assuming that the given vector is sorted. It is supposed to be used by module functions and not by outside sources (that is why it isn't a public function)
+fn binary_search(list: &Vec<usize>, item: &usize) -> usize {
+	let length = list.len();
+
+	if length == 1 {
+		let list_element = list[0];
+		if list_element > *item {
+			return 0;
+		} else {
+			return 1;
+		}
+	} else {
+		let split_index = length/2;
+		
+		let split_item = list[split_index];
+
+		if split_item > *item {
+			return binary_search(&list[..split_index].to_vec(), item);
+		} else if split_item < *item {
+			return binary_search(&list[split_index..].to_vec(), item) + split_index;
+		} else {
+			return split_index;
+		}
+	}
+}
+
 #[cfg(test)]
 mod tests {
 	const UNSORTED_LIST: &[usize] = &[6, 3, 4, 2, 5, 1];
@@ -61,6 +89,11 @@ mod tests {
 		func(list);
 
 		assert_eq!(list, SORTED_LIST, "Expected lists to be equal");
+	}
+
+	#[test]
+	fn binary_search_test() {
+		assert_eq!(binary_search(&vec![1, 3, 5, 7, 8, 19, 67], &9), 5);
 	}
 
     #[test]
